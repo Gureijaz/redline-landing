@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Redline finds the identity documents your practice is no longer allowed to hold, clears them with you present, and leaves you the dated record that says so. Cyber safety reviews for Australian practices captured by AML/CTF Tranche 2.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ctext y=%2726%27 font-size=%2728%27%3E%E2%9C%92%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<style>
+  html{color-scheme:light dark}
+  body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none !important}
+</style>
+<title>Redline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  --paper:#F2F0E8;
+  --paper-2:#FAF8F2;
+  --ink:#1A1A17;
+  --ink-2:#5E5B54;
+  --ink-3:#8A867C;
+  --rule:#DCD7C9;
+  --rule-2:#C6C0AF;
+  --accent:#AF2A20;
+  --accent-2:#AF2A20;
+  --accent-wash:rgba(175,42,32,.07);
+  --on-accent:#FDFCF8;
+  --slab:#1C1A17;
+  --slab-ink:#F2F0E8;
+  --slab-ink-2:#A8A399;
+  --slab-rule:#3A3630;
+  --foot:#1C1A17;
+  --strike:#8A867C;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1A1917;
+    --paper-2:#131211;
+    --ink:#EFEBE2;
+    --ink-2:#A29D93;
+    --ink-3:#7B766D;
+    --rule:#302D28;
+    --rule-2:#413D36;
+    --accent:#F0705E;
+    --accent-2:#F0705E;
+    --accent-wash:rgba(240,112,94,.10);
+    --on-accent:#1A1917;
+    --slab:#0F0E0D;
+    --slab-ink:#EFEBE2;
+    --slab-ink-2:#A29D93;
+    --slab-rule:#2A2723;
+    --foot:#0F0E0D;
+    --strike:#7B766D;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1A1917;
+  --paper-2:#131211;
+  --ink:#EFEBE2;
+  --ink-2:#A29D93;
+  --ink-3:#7B766D;
+  --rule:#302D28;
+  --rule-2:#413D36;
+  --accent:#F0705E;
+  --accent-2:#F0705E;
+  --accent-wash:rgba(240,112,94,.10);
+  --on-accent:#1A1917;
+  --slab:#0F0E0D;
+  --slab-ink:#EFEBE2;
+  --slab-ink-2:#A29D93;
+  --slab-rule:#2A2723;
+  --foot:#0F0E0D;
+  --strike:#7B766D;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,p,figure,blockquote{margin:0}
+button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+.serif{font-family:Newsreader,Georgia,"Times New Roman",serif;font-weight:400}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace}
+
+.mono-label{
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+}
+
+/* shell */
+.page{max-width:1560px;margin:0 auto;border-left:1px solid transparent;border-right:1px solid transparent}
+
+/* section grid: gutter | main | margin */
+.sec{
+  display:grid;
+  grid-template-columns:120px minmax(0,1fr);
+  border-bottom:1px solid var(--rule-2);
+}
+.sec.has-margin{grid-template-columns:120px minmax(0,1fr) minmax(0,420px)}
+.sec.split{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}
+
+.gutter{
+  border-right:1px solid var(--rule);
+  padding:34px 0 0 0;
+  display:flex;justify-content:center;
+}
+.gutter span{
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:12px;letter-spacing:.1em;color:var(--ink-3);
+}
+.main{padding:52px 60px 64px}
+.marginal{
+  border-left:1px solid var(--accent);
+  background:var(--paper-2);
+  padding:52px 48px 64px;
+}
+
+@media (max-width:1080px){
+  .sec,.sec.has-margin,.sec.split{grid-template-columns:1fr}
+  .gutter{
+    border-right:none;border-bottom:1px solid var(--rule);
+    justify-content:flex-start;padding:18px 28px;
+  }
+  .main{padding:40px 28px 48px}
+  .marginal{border-left:none;border-top:1px solid var(--accent);padding:36px 28px 44px}
+}
+
+/* header */
+header.bar{
+  position:sticky;top:0;z-index:20;
+  background:var(--paper);
+  border-bottom:1px solid var(--ink);
+  display:flex;align-items:center;gap:28px;
+  padding:16px 40px;
+}
+.wordmark{
+  font-family:Newsreader,Georgia,serif;font-weight:500;font-size:27px;
+  letter-spacing:-.005em;line-height:1;color:var(--ink);white-space:nowrap;
+}
+.wordmark i{font-style:normal;color:var(--accent)}
+.bar .tag{
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:13px;color:var(--ink-2);letter-spacing:.01em;
+}
+.bar .spacer{flex:1}
+@media (max-width:1180px){.bar .tag{display:none}}
+@media (max-width:640px){
+  header.bar{padding:12px 20px;gap:12px;flex-wrap:wrap}
+}
+
+.btn{
+  display:inline-block;font-family:"IBM Plex Sans",sans-serif;
+  font-size:15px;font-weight:600;padding:12px 22px;
+  border:1px solid transparent;text-decoration:none;white-space:nowrap;
+  transition:background .13s ease,color .13s ease,border-color .13s ease;
+}
+.btn-solid{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn-solid:hover{filter:brightness(1.08)}
+.btn-outline{
+  border-color:var(--ink);color:var(--ink);background:transparent;
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-weight:500;font-size:14px;
+}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
+.btn-lg{font-size:16.5px;padding:16px 30px}
+.btn-block{display:block;width:100%;text-align:center}
+
+/* hero */
+.hero-eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:13px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink-2);margin-bottom:34px;
+}
+.struck{
+  font-family:Newsreader,Georgia,serif;font-weight:400;
+  font-size:clamp(2rem,4.1vw,3.05rem);line-height:1.14;
+  color:var(--strike);margin-bottom:6px;max-width:17ch;
+  text-decoration:line-through;
+  text-decoration-color:var(--accent);
+  text-decoration-thickness:2px;
+}
+h1{
+  font-family:Newsreader,Georgia,serif;font-weight:400;
+  font-size:clamp(2.2rem,4.6vw,3.5rem);line-height:1.14;
+  letter-spacing:-.008em;max-width:15ch;margin-bottom:30px;
+  text-decoration:underline;
+  text-decoration-color:var(--accent);
+  text-decoration-thickness:2px;
+  text-underline-offset:.14em;
+}
+.hero-body{
+  font-size:17.5px;line-height:1.68;color:var(--ink-2);
+  max-width:46ch;margin-bottom:38px;
+}
+.hero-cta{display:flex;flex-wrap:wrap;align-items:center;gap:18px 26px}
+.hero-cta .fine{
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:13.5px;line-height:1.7;color:var(--ink-2);
+}
+
+.marginal .mono-label{color:var(--accent);margin-bottom:20px}
+.marginal p{font-size:16px;line-height:1.72;color:var(--ink-2);margin-bottom:18px;max-width:38ch}
+.marginal p:last-child{margin-bottom:0}
+
+/* headings */
+h2{
+  font-family:Newsreader,Georgia,serif;font-weight:400;
+  font-size:clamp(1.8rem,3.1vw,2.5rem);line-height:1.12;
+  letter-spacing:-.006em;margin-bottom:14px;
+}
+.sec-lede{font-size:16.5px;line-height:1.65;color:var(--ink-2);max-width:52ch;margin-bottom:6px}
+
+/* clauses */
+.clause-wrap{margin-top:36px;border-top:1px solid var(--rule)}
+.clause{
+  display:grid;grid-template-columns:96px minmax(0,1fr);gap:0 12px;
+  border-bottom:1px solid var(--rule);padding:26px 0;
+}
+.clause .num{
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:13.5px;color:var(--accent);padding-top:9px;
+}
+.clause-btn{
+  text-align:left;font-family:Newsreader,Georgia,serif;font-weight:400;
+  font-size:clamp(1.28rem,2.2vw,1.6rem);line-height:1.2;color:var(--ink);
+  text-decoration:underline;text-decoration-color:transparent;
+  text-decoration-thickness:2px;text-underline-offset:.14em;
+  transition:text-decoration-color .13s ease;
+}
+.clause-btn:hover{text-decoration-color:var(--rule-2)}
+.clause[data-open="true"] .clause-btn{text-decoration-color:var(--accent)}
+.clause .rule-text{font-size:16.5px;line-height:1.66;color:var(--ink-2);margin-top:9px;max-width:52ch}
+
+html.no-plain .plain{display:none}
+
+.plain-box{
+  margin-top:20px;background:var(--accent-wash);
+  border-left:2px solid var(--accent);
+  padding:16px 20px;max-width:52ch;
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:14px;line-height:1.75;color:var(--ink);
+}
+
+@media (max-width:640px){
+  .clause{grid-template-columns:1fr;gap:6px}
+  .clause .num{padding-top:0}
+}
+
+/* the dark facts slab */
+.slab{
+  background:var(--slab);color:var(--slab-ink);
+  padding:38px 36px;margin-top:6px;
+}
+.slab .mono-label{color:var(--slab-ink-2);margin-bottom:22px}
+.slab h3{
+  font-family:Newsreader,Georgia,serif;font-weight:400;
+  font-size:clamp(1.5rem,2.5vw,1.95rem);line-height:1.18;margin-bottom:26px;
+}
+.slab ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.slab li{font-size:15.5px;color:var(--slab-ink-2);line-height:1.5}
+.slab .note{
+  margin-top:26px;padding-top:18px;border-top:1px solid var(--slab-rule);
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:11.5px;line-height:1.7;color:var(--slab-ink-2);
+}
+.sec.has-margin .marginal.plainbg{background:transparent;border-left:1px solid var(--rule);padding:52px 40px 64px}
+@media (max-width:1080px){
+  .sec.has-margin .marginal.plainbg{border-left:none;border-top:1px solid var(--rule);padding:0 28px 44px}
+}
+
+/* schedule */
+.works{margin-top:34px;border-top:1px solid var(--rule)}
+.work{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.62fr);gap:0 56px;
+  padding:26px 0;border-bottom:1px solid var(--rule);
+}
+.work h3{font-size:19px;font-weight:700;letter-spacing:-.005em;margin-bottom:7px}
+.work p{font-size:16.5px;line-height:1.62;color:var(--ink-2);max-width:48ch}
+.work .aside{
+  border-left:1px solid var(--accent);padding-left:22px;
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:14px;line-height:1.72;color:var(--accent);
+}
+@media (max-width:900px){
+  .work{grid-template-columns:1fr;gap:18px}
+}
+
+/* statements */
+.statements{
+  margin-top:34px;display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+  gap:0;border-top:1px solid var(--rule);
+}
+.statement{
+  padding:30px 34px 28px;border-bottom:1px solid var(--rule);
+  border-right:1px solid var(--rule);
+  display:flex;flex-direction:column;gap:20px;
+}
+.statement:first-child{padding-left:0}
+.statement blockquote{
+  font-family:Newsreader,Georgia,serif;font-weight:400;
+  font-size:clamp(1.15rem,1.9vw,1.36rem);line-height:1.42;color:var(--ink);
+}
+.statement .sig{margin-top:auto;padding-top:18px;border-top:1px solid var(--rule)}
+.statement .sig .nm{font-size:15px;font-weight:600;line-height:1.35}
+.statement .sig .rl{
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:12px;line-height:1.6;color:var(--ink-3);margin-top:5px;
+}
+.illus{
+  margin-top:22px;
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:12px;line-height:1.7;color:var(--ink-3);
+}
+@media (max-width:640px){.statement{padding-left:0;padding-right:0;border-right:none}}
+
+/* how it runs */
+.runs{padding:52px 60px 64px}
+.days{margin-top:30px;border-top:1px solid var(--rule)}
+.day{
+  display:grid;grid-template-columns:96px minmax(0,1fr);gap:0 12px;
+  padding:22px 0;border-bottom:1px solid var(--rule);
+}
+.day .d{
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:13.5px;letter-spacing:.06em;color:var(--accent);padding-top:5px;
+}
+.day h3{font-size:19px;font-weight:700;margin-bottom:6px;letter-spacing:-.005em}
+.day p{font-size:16.5px;line-height:1.62;color:var(--ink-2);max-width:46ch}
+
+.stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:26px 30px;padding-top:34px;
+}
+.stat .n{
+  font-family:Newsreader,Georgia,serif;font-weight:400;
+  font-size:clamp(1.9rem,3.1vw,2.5rem);line-height:1;
+  font-variant-numeric:tabular-nums;display:block;
+}
+.stat .l{font-size:14.5px;color:var(--ink-2);display:block;margin-top:9px;line-height:1.4}
+
+/* terms panel */
+.terms{background:var(--paper-2);border-left:1px solid var(--rule-2);padding:52px 52px 60px;display:flex;flex-direction:column}
+.terms .mono-label{color:var(--ink-2);margin-bottom:18px}
+.terms h2{max-width:16ch;margin-bottom:20px}
+.terms p{font-size:16.5px;line-height:1.68;color:var(--ink-2);max-width:44ch}
+.terms hr{border:none;border-top:1px solid var(--rule);margin:28px 0}
+.terms .road{
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:14px;line-height:1.75;color:var(--ink-2);max-width:46ch;
+}
+.siglines{margin-top:auto;padding-top:56px}
+.siglines .line{border-top:1px solid var(--ink);margin-bottom:8px}
+.siglines .line.short{width:78%}
+.siglines .row{
+  display:flex;justify-content:space-between;gap:20px;margin-top:12px;
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:13px;color:var(--ink-2);
+}
+.terms .btn{margin-top:26px}
+@media (max-width:1080px){
+  .runs{padding:40px 28px 48px}
+  .terms{border-left:none;border-top:1px solid var(--rule-2);padding:40px 28px 48px}
+  .siglines{padding-top:36px}
+}
+
+/* queries */
+.queries{
+  margin-top:32px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:0 60px;
+}
+.qcol{display:flex;flex-direction:column}
+.q{border-top:1px solid var(--rule)}
+.q:last-child{border-bottom:1px solid var(--rule)}
+.qbtn{
+  width:100%;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+  padding:22px 0;text-align:left;
+  font-size:18px;font-weight:700;letter-spacing:-.005em;line-height:1.35;
+}
+.qbtn:hover{color:var(--accent)}
+.qbtn .pm{
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:19px;font-weight:400;color:var(--ink-3);line-height:1.3;flex:none;
+}
+.qbtn[aria-expanded="true"] .pm{color:var(--accent)}
+.qa{padding:0 40px 24px 0;font-size:16.5px;line-height:1.66;color:var(--ink-2);max-width:52ch}
+
+/* footer */
+footer{background:var(--foot);color:var(--slab-ink);padding:66px 60px 54px}
+.foot-grid{
+  display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr);
+  gap:40px 60px;
+}
+footer .wordmark{color:var(--slab-ink);margin-bottom:18px;display:block}
+footer .blurb{font-size:16px;line-height:1.65;color:var(--slab-ink-2);max-width:34ch}
+footer .mono-label{color:var(--slab-ink-2);margin-bottom:22px;display:block}
+footer ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+footer a{color:var(--slab-ink);text-decoration:none;font-size:16px}
+footer a:hover{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.foot-rule{border:none;border-top:1px solid var(--slab-rule);margin:48px 0 26px}
+.disclaimer{font-size:14.5px;line-height:1.72;color:var(--slab-ink-2);max-width:96ch}
+.colophon{
+  margin-top:16px;
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:12px;letter-spacing:.04em;color:var(--slab-ink-2);
+}
+@media (max-width:900px){
+  .foot-grid{grid-template-columns:1fr;gap:34px}
+  footer{padding:48px 28px 44px}
+}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<header class="bar">
+  <span class="wordmark">Redline<i>.</i></span>
+  <span class="tag">cyber safety review for practices captured by Tranche 2</span>
+  <span class="spacer"></span>
+  <button class="btn btn-outline" id="plainToggle" aria-pressed="false">Hide the plain English</button>
+  <a class="btn btn-solid" href="#arrange">Arrange a call</a>
+</header>
+
+<!-- A.1 hero -->
+<section class="sec has-margin">
+  <div class="gutter"><span>A.1</span></div>
+  <div class="main">
+    <p class="hero-eyebrow">Marked up 1 July 2026</p>
+    <p class="struck">We take the security of client information seriously.</p>
+    <h1>You are holding identity documents you are not allowed to hold.</h1>
+    <p class="hero-body">Not through carelessness. Through twenty years of good filing habits meeting a rule that changed overnight. We find the copies, clear them with you present, and leave you the dated record that says so.</p>
+    <div class="hero-cta">
+      <a class="btn btn-solid btn-lg" href="#arrange">Arrange a 30 minute call</a>
+      <span class="fine">fixed fee after the call<br>about 90 minutes of your time</span>
+    </div>
+  </div>
+  <aside class="marginal">
+    <span class="mono-label">Margin note</span>
+    <p>Roughly 90,000 small law firms, conveyancers, accountants and agencies became reporting entities on 1 July 2026, and came under the Privacy Act the same day.</p>
+    <p>The obligation that catches practices is not the checking. It is the proof that you did not keep what you checked.</p>
+  </aside>
+</section>
+
+<!-- 1. the clauses -->
+<section class="sec has-margin">
+  <div class="gutter"><span>1</span></div>
+  <div class="main">
+    <h2>The bind, set out as clauses</h2>
+    <p class="sec-lede">Open any clause for the plain English version. This is how the obligation actually lands in a practice of your size.</p>
+
+    <div class="clause-wrap">
+      <div class="clause" data-open="false">
+        <span class="num">1.1</span>
+        <div>
+          <button class="clause-btn" aria-expanded="false" aria-controls="p11">The verification duty</button>
+          <p class="rule-text">From 1 July 2026 a captured practice must verify the identity of its client before acting.</p>
+          <div class="plain plain-box" id="p11" hidden>Nobody argues with this one. You already ask for the licence, and your AML software already records the check.</div>
+        </div>
+      </div>
+
+      <div class="clause" data-open="true">
+        <span class="num">1.2</span>
+        <div>
+          <button class="clause-btn" aria-expanded="true" aria-controls="p12">The retention problem</button>
+          <p class="rule-text">The practice must not retain the identity document once the verification is recorded.</p>
+          <div class="plain plain-box" id="p12">This is the one your office is built to break. Save to matter, scan to folder, reply with attachment, back up nightly.</div>
+        </div>
+      </div>
+
+      <div class="clause" data-open="false">
+        <span class="num">1.3</span>
+        <div>
+          <button class="clause-btn" aria-expanded="false" aria-controls="p13">The evidentiary burden</button>
+          <p class="rule-text">The practice must be able to demonstrate that it is not retaining identity documents.</p>
+          <div class="plain plain-box" id="p13" hidden>Proving a negative, across every mailbox and drive you own, without an inventory and without an IT person to build one.</div>
+        </div>
+      </div>
+
+      <div class="clause" data-open="false">
+        <span class="num">2.1</span>
+        <div>
+          <button class="clause-btn" aria-expanded="false" aria-controls="p21">Capacity of the practice</button>
+          <p class="rule-text">No compliance function, no dedicated information security officer, no technical staff, and roughly two hours a month spent on security in total.</p>
+          <div class="plain plain-box" id="p21" hidden>The rule was written for banks. It now applies to a six person office above a shopfront in Bendigo.</div>
+        </div>
+      </div>
+
+      <div class="clause" data-open="false">
+        <span class="num">2.2</span>
+        <div>
+          <button class="clause-btn" aria-expanded="false" aria-controls="p22">The consequence</button>
+          <p class="rule-text">Penalties reach $33 million for a body corporate, with parallel exposure under the Australian Privacy Principles over the same data.</p>
+          <div class="plain plain-box" id="p22" hidden>A breach of client identity records hits your regulator, your insurer and your clients on the same morning. The aggravating fact is that the data should never have been there.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="marginal plainbg">
+    <div class="slab">
+      <span class="mono-label">On the facts</span>
+      <h3>One practice believed it held no identity documents. The discovery returned 218.</h3>
+      <ul>
+        <li>Ninety six in mailbox attachments</li>
+        <li>Seventy one in matter folders</li>
+        <li>Thirty four unfiled scanner drops</li>
+        <li>Seventeen on staff machines</li>
+      </ul>
+      <p class="note">Illustrative discovery, modelled on the filing patterns this service is built for.</p>
+    </div>
+  </aside>
+</section>
+
+<!-- SCH.1 schedule of works -->
+<section class="sec">
+  <div class="gutter"><span>SCH.1</span></div>
+  <div class="main">
+    <h2>Schedule of works</h2>
+    <div class="works">
+      <div class="work">
+        <div>
+          <h3>Security readiness review</h3>
+          <p>Observed maturity against the ASD Essential Eight, with the two or three fixes worth doing first.</p>
+        </div>
+        <p class="aside plain">A public baseline, not a score we invented.</p>
+      </div>
+      <div class="work">
+        <div>
+          <h3>Identity document discovery</h3>
+          <p>Mailboxes, shared drives, the scanner drop folder, desktops, downloads and the archive drive in the cupboard.</p>
+        </div>
+        <p class="aside plain">You see the full list before anything is touched.</p>
+      </div>
+      <div class="work">
+        <div>
+          <h3>Supervised clean-up and deletion record</h3>
+          <p>Cleared location by location on your approval, logged with path, date and authorising person.</p>
+        </div>
+        <p class="aside plain">Anything you want kept is kept, and recorded as your instruction.</p>
+      </div>
+      <div class="work">
+        <div>
+          <h3>Cyber Posture Statement</h3>
+          <p>Dated and evidence backed, written for AUSTRAC correspondence, insurers and client questionnaires.</p>
+        </div>
+        <p class="aside plain">Written to be read by someone else, years later, without us in the room.</p>
+      </div>
+      <div class="work">
+        <div>
+          <h3>Staff briefing, 20 minutes</h3>
+          <p>What to do when an identity document arrives by email, in words nobody has to look up.</p>
+        </div>
+        <p class="aside plain">Stops the pile rebuilding over the next twelve months.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ST.1 statements -->
+<section class="sec">
+  <div class="gutter"><span>ST.1</span></div>
+  <div class="main">
+    <h2>Statements taken</h2>
+    <p class="sec-lede">Principals of small Victorian practices, three months after the obligations commenced.</p>
+    <div class="statements">
+      <figure class="statement">
+        <blockquote>We found forty one licence scans in the settlements inbox. I would have sworn we deleted those. The dated statement saying they are gone is worth more to me than the scan ever was.</blockquote>
+        <figcaption class="sig">
+          <div class="nm">Marissa Kaur</div>
+          <div class="rl">Principal, six person conveyancing practice<br>Bendigo</div>
+        </figcaption>
+      </figure>
+      <figure class="statement">
+        <blockquote>Our AML software told us who the client was. It never once told us where the passport copy went afterwards. That gap was invisible until somebody went looking.</blockquote>
+        <figcaption class="sig">
+          <div class="nm">Daniel Tran</div>
+          <div class="rl">Director, eleven person accounting firm<br>Melbourne</div>
+        </figcaption>
+      </figure>
+      <figure class="statement">
+        <blockquote>I have two hours a month for this and I am not technical. Three things to do, in plain English, that I could actually finish. That is the only reason it got done.</blockquote>
+        <figcaption class="sig">
+          <div class="nm">Sophie O'Donnell</div>
+          <div class="rl">Licensed agent and office manager<br>Geelong</div>
+        </figcaption>
+      </figure>
+    </div>
+    <p class="illus">Illustrative statements, written to represent the practices this service is built for. Redline is a concept venture and is not yet trading.</p>
+  </div>
+</section>
+
+<!-- how it runs + terms -->
+<section class="sec split" id="arrange">
+  <div class="runs">
+    <h2>How it runs</h2>
+    <div class="days">
+      <div class="day">
+        <span class="d">DAY 0</span>
+        <div>
+          <h3>Thirty minutes on the phone</h3>
+          <p>What you run, who has access, where scans land. A fixed fee follows in writing.</p>
+        </div>
+      </div>
+      <div class="day">
+        <span class="d">DAY 1</span>
+        <div>
+          <h3>Discovery and clean-up in one visit</h3>
+          <p>The list is read through with you, then cleared as you sign off. Nothing happens off screen.</p>
+        </div>
+      </div>
+      <div class="day">
+        <span class="d">DAY 7</span>
+        <div>
+          <h3>Record, statement, briefing</h3>
+          <p>Deletion record attached to the dated statement, team briefed the same week.</p>
+        </div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="n">~90,000</span><span class="l">firms captured</span></div>
+      <div class="stat"><span class="n">$33M</span><span class="l">maximum penalty</span></div>
+      <div class="stat"><span class="n">$56,600</span><span class="l">average incident cost</span></div>
+      <div class="stat"><span class="n">7 yrs</span><span class="l">retention expected</span></div>
+    </div>
+  </div>
+
+  <div class="terms">
+    <span class="mono-label">Terms, plainly</span>
+    <h2>One fixed fee, quoted before anything begins.</h2>
+    <p>Priced on staff numbers and systems rather than hours, so the figure does not move. If the call suggests you have no problem, we will say so and charge nothing.</p>
+    <hr>
+    <p class="road">Roadmap, not sold today: the same checks monthly at $249 a month.</p>
+    <div class="siglines">
+      <div class="line"></div>
+      <div class="line short"></div>
+      <div class="row"><span>Principal or practice manager</span><span>Date</span></div>
+    </div>
+    <a class="btn btn-solid btn-lg btn-block" href="#arrange">Arrange the call</a>
+  </div>
+</section>
+
+<!-- Q queries -->
+<section class="sec">
+  <div class="gutter"><span>Q</span></div>
+  <div class="main">
+    <h2>Queries raised</h2>
+    <div class="queries">
+      <div class="qcol">
+        <div class="q">
+          <button class="qbtn" aria-expanded="false" aria-controls="a1">Does this certify our compliance?<span class="pm" aria-hidden="true">+</span></button>
+          <div class="qa" id="a1" hidden>No, and be wary of anyone who says otherwise. We are not a law firm and we do not give legal advice. We assess and evidence your security posture against the ASD Essential Eight, and we document what was found and removed. Your obligations remain yours.</div>
+        </div>
+        <div class="q">
+          <button class="qbtn" aria-expanded="false" aria-controls="a2">Will you delete something we need?<span class="pm" aria-hidden="true">+</span></button>
+          <div class="qa" id="a2" hidden>Nothing is deleted without you in the room. You read the full list first, approve it location by location, and anything you choose to keep is kept and recorded as your instruction.</div>
+        </div>
+        <div class="q">
+          <button class="qbtn" aria-expanded="false" aria-controls="a3">Do you read client files?<span class="pm" aria-hidden="true">+</span></button>
+          <div class="qa" id="a3" hidden>We look for identity documents by type, name and location, not for the contents of your matters. Access is read-only, granted by your principal, and you can revoke it at any moment.</div>
+        </div>
+      </div>
+      <div class="qcol">
+        <div class="q">
+          <button class="qbtn" aria-expanded="false" aria-controls="a4">What about our retention obligations?<span class="pm" aria-hidden="true">+</span></button>
+          <div class="qa" id="a4" hidden>The seven year duty applies to the record of the verification, not to a copy of the document itself. Keeping the record and clearing the copy is the position OAIC guidance points to, and it is exactly the line the clean-up walks.</div>
+        </div>
+        <div class="q">
+          <button class="qbtn" aria-expanded="false" aria-controls="a5">We have no IT person.<span class="pm" aria-hidden="true">+</span></button>
+          <div class="qa" id="a5" hidden>That is the whole reason this exists. Managed providers need twenty or more seats to be worth their while, and you carry the same liability at six. Nothing is installed and nothing changes for your staff.</div>
+        </div>
+        <div class="q">
+          <button class="qbtn" aria-expanded="false" aria-controls="a6">How long until we can point to something?<span class="pm" aria-hidden="true">+</span></button>
+          <div class="qa" id="a6" hidden>About a week. The call is day zero, discovery and clean-up happen in a single visit, and the dated statement with its deletion record follows within seven days.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <span class="wordmark">Redline<i>.</i></span>
+      <p class="blurb">Cyber safety reviews and identity document clean-ups for small Australian practices. Melbourne based, working nationally.</p>
+    </div>
+    <div>
+      <span class="mono-label">Schedule</span>
+      <ul>
+        <li><a href="#arrange">Readiness review</a></li>
+        <li><a href="#arrange">Discovery and clean-up</a></li>
+        <li><a href="#arrange">Posture statement</a></li>
+      </ul>
+    </div>
+    <div>
+      <span class="mono-label">Contact</span>
+      <ul>
+        <li><a href="mailto:hello@redline.com.au">hello@redline.com.au</a></li>
+        <li><a href="#arrange">Arrange a call</a></li>
+      </ul>
+    </div>
+  </div>
+  <hr class="foot-rule">
+  <p class="disclaimer">Redline is not a law firm and does not provide legal advice. We do not certify AUSTRAC, AML/CTF or Privacy Act compliance; we assess and evidence security posture against the ASD Essential Eight. No security control can guarantee that a practice will not be breached. Redline is a concept venture developed for Deakin University SIT317 and is not trading; client statements and discovery figures shown are illustrative. Copyright 2026 Redline Pty Ltd.</p>
+  <p class="colophon">SIT317 Information Technology Innovations and Entrepreneurship &middot; Task 6.2C Landing Page &middot; Gureijaz Singh Aulakh &middot; s224859639 &middot; Deakin University</p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  /* clause accordions */
+  document.querySelectorAll('.clause-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var clause = btn.closest('.clause');
+      var panel  = document.getElementById(btn.getAttribute('aria-controls'));
+      var open   = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      clause.setAttribute('data-open', String(!open));
+      panel.hidden = open;
+    });
+  });
+
+  /* query accordions */
+  document.querySelectorAll('.qbtn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var panel = document.getElementById(btn.getAttribute('aria-controls'));
+      var open  = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      panel.hidden = open;
+      btn.querySelector('.pm').textContent = open ? '+' : String.fromCharCode(0x2212);
+    });
+  });
+
+  /* hide / show every plain English annotation */
+  var toggle = document.getElementById('plainToggle');
+  toggle.addEventListener('click', function(){
+    var hidden = document.documentElement.classList.toggle('no-plain');
+    toggle.textContent = hidden ? 'Show the plain English' : 'Hide the plain English';
+    toggle.setAttribute('aria-pressed', String(hidden));
+  });
+})();
+</script>
+
+</body>
+</html>
