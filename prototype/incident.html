@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>First-hour incident card | Redline</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2710%27 fill=%27%23AF2A20%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/redline.css">
+<style>
+  .band{background:var(--accent);color:var(--on-accent);padding:9px 18px;
+        font-family:"IBM Plex Mono",Consolas,monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+  .step{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--rule);align-items:flex-start}
+  .step:last-child{border-bottom:0}
+  .step .no{font-family:"IBM Plex Mono",Consolas,monospace;font-size:14px;color:var(--accent);font-weight:600;padding-top:2px}
+  .step .b b{display:block;font-weight:600;margin-bottom:2px}
+  .never{border:1.5px solid var(--accent);padding:16px 18px;margin-top:22px}
+  .never li{display:flex;gap:10px;font-size:15px;line-height:1.5;margin-bottom:6px}
+  .never li:last-child{margin-bottom:0}
+  .never li:before{content:"✕";color:var(--accent);font-weight:600}
+  @media print{ .card{border:1px solid #D4CFC2;padding:16px} .band{background:#AF2A20;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact} }
+</style>
+</head>
+<body>
+
+<header class="bar noprint">
+  <a class="wm sm" href="index.html">Redline<i>.</i></a>
+  <span class="grow"></span>
+  <button class="btn sm" onclick="window.print()">Print the card</button>
+</header>
+
+<main>
+  <section>
+    <div class="wrap narrow">
+
+      <p class="lbl red noprint" style="margin-bottom:10px">Pin this near the phone</p>
+      <h1 class="h-lg noprint" style="margin-bottom:8px">First-hour incident card</h1>
+      <p class="small muted noprint" style="margin-bottom:24px;max-width:70ch">
+        Business email compromise is among the most reported cybercrimes against Australian business, and
+        settlement-day payment redirection is the version that hits conveyancing practices hardest (ASD 2025).
+        The two mistakes small firms make under pressure are ringing a number from the fraudulent email, and
+        deleting it afterwards. This card names both.
+      </p>
+
+      <article class="card" style="padding:0;overflow:hidden">
+        <div class="band">If something goes wrong: the first hour</div>
+        <div style="padding:clamp(18px,2.6vw,28px)">
+          <h2 class="h-lg" style="margin-bottom:6px">Suspected payment redirection</h2>
+          <p class="small muted" style="margin-bottom:16px">
+            Someone has changed bank details by email, or a client says the money never arrived.
+            Work down this list in order. It should take under an hour.
+          </p>
+
+          <div class="step">
+            <span class="no">01</span>
+            <span class="b">
+              <b>Ring the bank on the number on your card, not one from an email.</b>
+              <span class="small muted">Ask for the fraud team and say the words “misdirected payment”. Recall is possible for a short window and it shrinks by the hour.</span>
+            </span>
+          </div>
+          <div class="step">
+            <span class="no">02</span>
+            <span class="b">
+              <b>Do not delete anything. Preserve the email and its headers.</b>
+              <span class="small muted">Move it to a folder if you must, but keep it. The headers are what tell an investigator whether the mailbox itself was reached.</span>
+            </span>
+          </div>
+          <div class="step">
+            <span class="no">03</span>
+            <span class="b">
+              <b>Change the password on the affected mailbox, then check forwarding rules.</b>
+              <span class="small muted">An attacker who has been reading mail usually leaves a rule behind. Changing the password without removing the rule fixes nothing.</span>
+            </span>
+          </div>
+          <div class="step">
+            <span class="no">04</span>
+            <span class="b">
+              <b>Tell the other side of the transaction by phone.</b>
+              <span class="small muted">Use a number you already held, not one from the message. If they have also paid, their clock is running too.</span>
+            </span>
+          </div>
+          <div class="step">
+            <span class="no">05</span>
+            <span class="b">
+              <b>Notifiable data breach? Assess within 30 days, and call us.</b>
+              <span class="small muted">If client identity information may have been reached, the assessment clock starts now. Report cybercrime at cyber.gov.au/report.</span>
+            </span>
+          </div>
+
+          <div class="never">
+            <p class="lbl red" style="margin-bottom:10px">Never, under any circumstances</p>
+            <ul>
+              <li><span>Ring a phone number that appears in the suspicious email.</span></li>
+              <li><span>Delete the email, the sent items, or the mailbox rules.</span></li>
+              <li><span>Send further funds while you are still working out what happened.</span></li>
+            </ul>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;border-top:1px solid var(--rule);margin-top:20px;padding-top:12px">
+            <span class="small muted">Redline. · hello@redline.com.au</span>
+            <span class="mono tiny">print it · pin it · nobody reads a PDF at 4pm on a settlement day</span>
+          </div>
+        </div>
+      </article>
+
+      <p class="mono tiny noprint" style="margin-top:20px">
+        Card content is an extension of my own beyond the team's Design and Technology Plan, which covers
+        finding and clearing identity documents but has nothing for the morning something goes wrong.
+      </p>
+
+    </div>
+  </section>
+</main>
+
+<script src="assets/app.js"></script>
+<script src="assets/data.js"></script>
+</body>
+</html>
