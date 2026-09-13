@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Consultant console — Redline</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2710%27 fill=%27%23AF2A20%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/redline.css">
+<style>
+  .seg{display:inline-flex;border:1px solid var(--rule-2)}
+  .seg button{padding:5px 12px;font-size:13.5px;color:var(--ink-2);border-right:1px solid var(--rule-2)}
+  .seg button:last-child{border-right:0}
+  .seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);font-weight:600}
+  .e8row{display:flex;align-items:flex-start;gap:16px;padding:12px 0;border-bottom:1px solid var(--rule)}
+  .e8row:last-child{border-bottom:0}
+  .e8row .n{flex:1}
+  .item{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--rule);font-size:14.5px}
+  .item:last-child{border-bottom:0}
+  .item .f{flex:1;min-width:0}
+  .item .f b{font-weight:500;display:block;overflow-wrap:anywhere}
+  .item .f span{display:block;color:var(--ink-2);font-size:12.5px;font-family:"IBM Plex Mono",Consolas,monospace;overflow-wrap:anywhere}
+  .loc{border:1px solid var(--rule);background:var(--paper-2);margin-bottom:14px}
+  .loc > summary{padding:13px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;list-style:none}
+  .loc > summary::-webkit-details-marker{display:none}
+  .loc > summary .t{flex:1;font-weight:600}
+  .loc > div{padding:0 16px 14px}
+  .steps{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+  .steps a{padding:6px 12px;border:1px solid var(--rule-2);text-decoration:none;color:var(--ink-2);font-size:13.5px}
+  .steps a:hover{border-color:var(--accent);color:var(--accent)}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="wm sm" href="index.html">Redline<i>.</i></a>
+  <span class="tag">consultant console — staff only</span>
+  <span class="grow"></span>
+  <span class="pill" id="engTag">no engagement</span>
+</header>
+
+<main>
+  <section>
+    <div class="wrap">
+
+      <p class="lbl red" style="margin-bottom:10px">Engagement workspace</p>
+      <h1 class="h-lg" style="margin-bottom:10px">Review, discovery and evidence</h1>
+      <p class="small muted" style="max-width:80ch;margin-bottom:22px">
+        This is the staff-only side of the service. It is deliberately separate from the client-facing
+        pages: the practice never has to live inside software. Discovery in a live engagement runs on the
+        practice's own screen, driven by the principal, using the search already built into Microsoft&nbsp;365
+        or Google Workspace — Redline holds no standing access to the tenancy. The scan below simulates
+        that search over a seeded practice.
+      </p>
+
+      <div class="steps">
+        <a href="#s1">1 · Engagement</a>
+        <a href="#s2">2 · Essential Eight baseline</a>
+        <a href="#s3">3 · Discovery</a>
+        <a href="#s4">4 · Review and clear</a>
+        <a href="#s5">5 · Deletion register</a>
+        <a href="#s6">6 · Issue the Statement</a>
+      </div>
+
+      <!-- ============ 1. ENGAGEMENT ============ -->
+      <div class="card" id="s1">
+        <p class="lbl red" style="margin-bottom:12px">1 · Engagement record</p>
+        <div class="grid c2">
+          <label class="field"><span class="small muted">Practice</span><input type="text" id="f_practice"></label>
+          <label class="field"><span class="small muted">Principal / contact</span><input type="text" id="f_contact"></label>
+          <label class="field"><span class="small muted">Staff</span><input type="text" id="f_staff"></label>
+          <label class="field"><span class="small muted">Location</span><input type="text" id="f_suburb"></label>
+        </div>
+        <label class="field"><span class="small muted">Systems in scope</span><input type="text" id="f_systems"></label>
+        <div class="btn-row">
+          <button class="btn sm" id="saveEng">Save engagement</button>
+          <button class="btn ghost sm" id="loadDemo">Load the worked example</button>
+        </div>
+        <p class="small muted" id="checkEcho" style="margin-top:14px"></p>
+      </div>
+
+      <!-- ============ 2. ESSENTIAL EIGHT ============ -->
+      <div class="card" id="s2">
+        <p class="lbl red" style="margin-bottom:4px">2 · Small-firm subset of the ASD Essential Eight</p>
+        <p class="small muted" style="margin-bottom:12px">
+          A public baseline, not a score we invented. Each control drives both the posture band and the
+          next-actions list on the Statement.
+        </p>
+        <div id="e8"></div>
+        <p class="small" style="margin-top:14px">
+          Observed posture: <b id="e8band">—</b> <span class="muted" id="e8count"></span>
+        </p>
+      </div>
+
+      <!-- ============ 3. DISCOVERY ============ -->
+      <div class="card" id="s3">
+        <p class="lbl red" style="margin-bottom:4px">3 · Identity document discovery</p>
+        <p class="small muted" style="margin-bottom:14px">
+          Searches by document type, filename pattern and location — not by matter content. The full list is
+          read through with the principal before anything is touched.
+        </p>
+        <div class="btn-row" style="margin-bottom:16px">
+          <button class="btn sm" id="runScan">Run discovery</button>
+          <button class="btn ghost sm" id="clearScan">Clear results</button>
+        </div>
+        <div class="scan" id="scan" hidden></div>
+        <p class="small" id="scanTotal" style="margin-top:14px" hidden></p>
+      </div>
+
+      <!-- ============ 4. REVIEW ============ -->
+      <div class="card" id="s4">
+        <p class="lbl red" style="margin-bottom:4px">4 · Review and clear, location by location</p>
+        <p class="small muted" style="margin-bottom:14px">
+          Nothing is deleted without the principal in the room. Anything the practice chooses to keep is kept,
+          and recorded as its instruction.
+        </p>
+        <div id="review"><p class="small muted">Run discovery first.</p></div>
+        <div class="btn-row" id="reviewTotals" style="margin-top:16px"></div>
+      </div>
+
+      <!-- ============ 5. REGISTER ============ -->
+      <div class="card" id="s5">
+        <p class="lbl red" style="margin-bottom:4px">5 · Deletion register</p>
+        <p class="small muted" style="margin-bottom:14px">
+          Written as the work happens, not reconstructed afterwards. This register is what turns
+          “we no longer hold it” into something a third party can accept.
+        </p>
+        <div style="overflow-x:auto"><table id="register"><tbody></tbody></table></div>
+      </div>
+
+      <!-- ============ 6. ISSUE ============ -->
+      <div class="card" id="s6">
+        <p class="lbl red" style="margin-bottom:12px">6 · Issue the Cyber Posture Statement</p>
+        <label class="field"><span class="small muted">Authorising person (the practice)</span><input type="text" id="f_auth" placeholder="M. Kaur, Principal"></label>
+        <div class="btn-row">
+          <button class="btn" id="issue">Issue Statement</button>
+          <a class="btn ghost" href="statement.html">Open the current Statement</a>
+        </div>
+        <p class="small muted" id="issueNote" style="margin-top:12px"></p>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<script src="assets/app.js"></script>
+<script src="assets/data.js"></script>
+<script>
+(function(){
+  'use strict';
+  var R=window.Redline, D=window.RedlineData, $=R.$, $$=R.$$;
+  var s=R.load();
+
+  /* ---------------- 1. engagement ---------------- */
+  var FIELDS=['practice','contact','staff','suburb','systems'];
+  function fillEng(){
+    var e=s.engagement||{};
+    FIELDS.forEach(function(k){ $('#f_'+k).value = e[k]==null?'':e[k]; });
+    $('#engTag').textContent = e.practice ? e.practice : 'no engagement';
+    $('#engTag').className = 'pill' + (e.practice?' red':'');
+    var c=s.check;
+    $('#checkEcho').innerHTML = c && c.band
+      ? 'Client self-check on file: <b>'+R.esc(c.band)+'</b> ('+c.score+'/'+c.max+'), taken '+R.esc(R.longDate(c.takenAt))+'. Self-reported — the review supersedes it.'
+      : 'No client self-check on file. <a href="check.html">Run the Readiness Check</a> to see how the two sides connect.';
+  }
+  $('#saveEng').addEventListener('click',function(){
+    s.engagement = s.engagement || {};
+    FIELDS.forEach(function(k){ s.engagement[k]=$('#f_'+k).value.trim(); });
+    s.engagement.startedAt = s.engagement.startedAt || new Date().toISOString();
+    R.save(s); fillEng(); flash($('#saveEng'),'Saved');
+  });
+  $('#loadDemo').addEventListener('click',function(){ D.seed(); location.reload(); });
+
+  function flash(btn,txt){
+    var old=btn.textContent; btn.textContent=txt;
+    setTimeout(function(){ btn.textContent=old; },1100);
+  }
+
+  /* ---------------- 2. essential eight ---------------- */
+  var STATES=[['pass','Pass'],['partial','Partial'],['fail','Fail']];
+  function drawE8(){
+    var box=$('#e8'); box.innerHTML='';
+    D.E8.forEach(function(c){
+      var seg=R.el('div',{class:'seg'});
+      STATES.forEach(function(st){
+        seg.appendChild(R.el('button',{
+          type:'button',
+          'aria-pressed': s.e8[c.id]===st[0] ? 'true':'false',
+          text:st[1],
+          onclick:function(){ s.e8[c.id]= s.e8[c.id]===st[0]?undefined:st[0]; R.save(s); drawE8(); }
+        }));
+      });
+      box.appendChild(R.el('div',{class:'e8row'},[
+        R.el('div',{class:'n'},[
+          R.el('b',{text:c.n}),
+          R.el('span',{class:'sub small muted',style:'display:block',text:c.d})
+        ]),
+        seg
+      ]));
+    });
+    var r=e8Result();
+    $('#e8band').textContent = r.assessed ? r.band : '—';
+    $('#e8count').textContent = r.assessed
+      ? ' — ' + r.pass + ' pass, ' + r.partial + ' partial, ' + r.fail + ' fail of ' + D.E8.length
+      : ' — nothing assessed yet';
+  }
+  function e8Result(){
+    var pass=0,partial=0,fail=0,assessed=0;
+    D.E8.forEach(function(c){
+      var v=s.e8[c.id]; if(!v) return; assessed++;
+      if(v==='pass')pass++; else if(v==='partial')partial++; else fail++;
+    });
+    var pts = pass*2 + partial*1;
+    var pct = assessed ? pts/(D.E8.length*2) : 0;
+    var band = pct>=0.85?'Strong':pct>=0.6?'Managed':pct>=0.3?'Developing':'Initial';
+    return {pass:pass,partial:partial,fail:fail,assessed:assessed,band:band,pct:pct};
+  }
+
+  /* ---------------- 3. discovery ---------------- */
+  function drawScanStatic(){
+    if(!s.discovery) return;
+    var box=$('#scan'); box.hidden=false; box.innerHTML='';
+    D.CORPUS.forEach(function(loc){
+      var n=s.discovery.items.filter(function(i){return i.loc===loc.id;}).length;
+      box.appendChild(row(loc,'done', n+' found'));
+    });
+    total();
+  }
+  function row(loc,cls,st){
+    return R.el('div',{class:'row '+cls},[
+      R.el('span',{class:'loc'},[ R.el('b',{text:loc.n}), R.el('span',{class:'tiny mono',style:'display:block',text:loc.where}) ]),
+      R.el('span',{class:'st',text:st})
+    ]);
+  }
+  function total(){
+    var t=$('#scanTotal'); t.hidden=false;
+    var n=s.discovery?s.discovery.items.length:0;
+    t.innerHTML='<b>'+n+' identity documents found</b> across '+D.CORPUS.length+
+      ' locations. The practice believed it held none.';
+  }
+  $('#runScan').addEventListener('click',function(){
+    var btn=this; btn.disabled=true;
+    var box=$('#scan'); box.hidden=false; box.innerHTML=''; $('#scanTotal').hidden=true;
+    var rows=D.CORPUS.map(function(loc){ var r=row(loc,'','queued'); box.appendChild(r); return r; });
+    var items=[], k=0;
+    (function step(){
+      if(k>=D.CORPUS.length){
+        s.discovery={ranAt:new Date().toISOString(),items:items};
+        s.decisions={};
+        items.forEach(function(it){
+          s.decisions[it.id]= it.keepDefault
+            ? {action:'keep',reason:'Retained on client instruction — long-running matter',at:new Date().toISOString()}
+            : {action:'clear',reason:'',at:new Date().toISOString()};
+        });
+        R.save(s); total(); drawReview(); drawRegister(); btn.disabled=false;
+        return;
+      }
+      var loc=D.CORPUS[k], r=rows[k];
+      r.className='row busy'; r.querySelector('.st').textContent='searching';
+      setTimeout(function(){
+        loc.items.forEach(function(it,idx){
+          items.push({id:loc.id+'-'+idx,loc:loc.id,locName:loc.n,file:it[0],path:it[1],date:it[2],keepDefault:!!loc.keepDefault});
+        });
+        r.className='row done';
+        r.querySelector('.st').textContent=loc.items.length+' found';
+        k++; step();
+      }, Math.round(loc.secs*260));
+    })();
+  });
+  $('#clearScan').addEventListener('click',function(){
+    s.discovery=null; s.decisions={}; R.save(s);
+    $('#scan').hidden=true; $('#scanTotal').hidden=true;
+    drawReview(); drawRegister();
+  });
+
+  /* ---------------- 4. review ---------------- */
+  function drawReview(){
+    var box=$('#review'); box.innerHTML='';
+    if(!s.discovery){ box.appendChild(R.el('p',{class:'small muted',text:'Run discovery first.'})); $('#reviewTotals').innerHTML=''; return; }
+
+    D.CORPUS.forEach(function(loc){
+      var items=s.discovery.items.filter(function(i){return i.loc===loc.id;});
+      if(!items.length) return;
+      var cleared=items.filter(function(i){return (s.decisions[i.id]||{}).action==='clear';}).length;
+
+      var list=R.el('div');
+      items.forEach(function(it){
+        var d=s.decisions[it.id]||{action:'clear'};
+        var seg=R.el('div',{class:'seg'});
+        [['clear','Clear'],['keep','Keep']].forEach(function(a){
+          seg.appendChild(R.el('button',{
+            type:'button','aria-pressed': d.action===a[0]?'true':'false', text:a[1],
+            onclick:function(){
+              s.decisions[it.id]={
+                action:a[0],
+                reason:a[0]==='keep' ? (d.reason||'Retained on client instruction') : '',
+                at:new Date().toISOString()
+              };
+              R.save(s); drawReview(); drawRegister();
+            }
+          }));
+        });
+        list.appendChild(R.el('div',{class:'item'},[
+          R.el('span',{class:'f'},[ R.el('b',{text:it.file}), R.el('span',{text:it.path+'  ·  '+R.shortDate(it.date)}) ]),
+          seg
+        ]));
+      });
+
+      var sum=R.el('summary',{},[
+        R.el('span',{class:'t',text:loc.n}),
+        R.el('span',{class:'pill'+(cleared===items.length?' red':''),text:cleared+' of '+items.length+' to clear'}),
+        R.el('span',{class:'tiny mono',text:'▾'})
+      ]);
+      var det=R.el('details',{class:'loc'},[sum, R.el('div',{},[
+        R.el('div',{class:'btn-row',style:'margin:2px 0 10px'},[
+          R.el('button',{class:'btn ghost sm',text:'Clear all here',onclick:function(){
+            items.forEach(function(it){ s.decisions[it.id]={action:'clear',reason:'',at:new Date().toISOString()}; });
+            R.save(s); drawReview(); drawRegister();
+          }}),
+          R.el('button',{class:'btn ghost sm',text:'Keep all here',onclick:function(){
+            items.forEach(function(it){ s.decisions[it.id]={action:'keep',reason:'Retained on client instruction',at:new Date().toISOString()}; });
+            R.save(s); drawReview(); drawRegister();
+          }})
+        ]),
+        list
+      ])]);
+      if(loc.keepDefault) det.open=true;
+      box.appendChild(det);
+    });
+
+    var t=counts();
+    $('#reviewTotals').innerHTML='';
+    $('#reviewTotals').appendChild(R.el('span',{class:'pill red',text:t.clear+' to clear'}));
+    $('#reviewTotals').appendChild(R.el('span',{class:'pill',text:t.keep+' kept on instruction'}));
+  }
+  function counts(){
+    var c={clear:0,keep:0};
+    if(!s.discovery) return c;
+    s.discovery.items.forEach(function(it){
+      ((s.decisions[it.id]||{}).action==='keep') ? c.keep++ : c.clear++;
+    });
+    return c;
+  }
+
+  /* ---------------- 5. register ---------------- */
+  function drawRegister(){
+    var tb=$('#register').querySelector('tbody'); tb.innerHTML='';
+    var head=R.el('tr',{},[
+      R.el('th',{text:'File'}), R.el('th',{text:'Path'}),
+      R.el('th',{text:'Action'}), R.el('th',{text:'Date'}), R.el('th',{text:'Authorised by'})
+    ]);
+    tb.appendChild(head);
+    if(!s.discovery){ tb.appendChild(R.el('tr',{},[R.el('td',{colspan:'5',class:'small muted',text:'Nothing yet.'})])); return; }
+    var auth = ($('#f_auth').value.trim()) || (s.engagement&&s.engagement.contact) || '—';
+    s.discovery.items.forEach(function(it){
+      var d=s.decisions[it.id]||{action:'clear'};
+      tb.appendChild(R.el('tr',{},[
+        R.el('td',{text:it.file}),
+        R.el('td',{class:'mono tiny',text:it.path}),
+        R.el('td',{},[ R.el('span',{class:'pill '+(d.action==='keep'?'warn':'ok'),text:d.action==='keep'?'kept':'deleted'}) ]),
+        R.el('td',{class:'mono tiny',text:R.shortDate(d.at||new Date())}),
+        R.el('td',{class:'small',text:auth})
+      ]));
+    });
+  }
+
+  /* ---------------- 6. issue ---------------- */
+  $('#issue').addEventListener('click',function(){
+    if(!s.engagement||!s.engagement.practice){ $('#issueNote').textContent='Add the practice name first.'; return; }
+    if(!s.discovery){ $('#issueNote').textContent='Run discovery before issuing a Statement — the Statement is the evidence of it.'; return; }
+    var r=e8Result();
+    s.statement={
+      ref: R.makeRef(s.engagement.practice+(s.engagement.startedAt||'')),
+      issued: new Date().toISOString(),
+      band: r.assessed ? r.band : (s.check&&s.check.band) || 'Developing',
+      authorisedBy: $('#f_auth').value.trim() || s.engagement.contact || '—'
+    };
+    R.save(s);
+    location.href='statement.html';
+  });
+  $('#f_auth').addEventListener('input',drawRegister);
+
+  /* ---------------- boot ---------------- */
+  fillEng(); drawE8(); drawScanStatic(); drawReview(); drawRegister();
+  if(s.statement){ $('#issueNote').textContent='Last issued '+s.statement.ref+' on '+R.longDate(s.statement.issued)+'. Issuing again supersedes it.'; }
+  if(s.engagement && s.engagement.contact) $('#f_auth').value=s.engagement.contact;
+})();
+</script>
+</body>
+</html>

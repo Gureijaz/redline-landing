@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Send your ID securely — Redline</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2710%27 fill=%27%23AF2A20%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/redline.css">
+<style>
+  .drop{
+    border:1.5px dashed var(--rule-2);background:transparent;
+    padding:34px 20px;text-align:center;cursor:pointer;transition:border-color .15s ease,background .15s ease;
+  }
+  .drop:hover,.drop.over{border-color:var(--accent);background:var(--accent-wash)}
+  .drop b{display:block;font-weight:600;margin-bottom:4px}
+  .picked{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--rule);background:var(--paper-2);margin-top:12px}
+  .picked .nm{flex:1;overflow-wrap:anywhere}
+  .timer{
+    display:inline-block;border:1.5px dashed var(--accent);color:var(--accent);
+    padding:6px 12px;font-family:"IBM Plex Mono",Consolas,monospace;font-size:13.5px;
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="wm sm" href="index.html">Redline<i>.</i></a>
+  <span class="tag">secure ID intake — Harrow &amp; Bell Conveyancing</span>
+  <span class="grow"></span>
+  <span class="pill red">link expires in 3 days</span>
+</header>
+
+<main>
+  <section>
+    <div class="wrap narrow">
+
+      <!-- ============ SEND ============ -->
+      <div id="send">
+        <p class="lbl red" style="margin-bottom:12px">Secure ID intake link</p>
+        <h1 class="h-lg" style="margin-bottom:14px">Send your ID securely</h1>
+        <p class="lead" style="margin-bottom:6px">
+          Harrow &amp; Bell need to verify your identity before settlement. Use this link instead of
+          replying to the email — it goes straight to the verification step and not into anyone's inbox.
+        </p>
+        <p class="small muted" style="margin-bottom:26px">
+          Driver licence, passport or another accepted document. One file is enough.
+        </p>
+
+        <div class="drop" id="drop" tabindex="0" role="button" aria-label="Choose a file to upload">
+          <b>Upload driver licence or passport</b>
+          <span class="small muted">Click to choose, or drop a file here</span>
+        </div>
+        <input type="file" id="file" hidden accept="image/*,.pdf">
+        <div id="picked" hidden></div>
+
+        <div class="btn-row" style="margin-top:20px">
+          <button class="btn" id="sendBtn" disabled>Send securely</button>
+        </div>
+
+        <p class="timer" style="margin-top:20px">auto-deletes 7 days after verification</p>
+        <p class="small muted" style="margin-top:14px">
+          The practice records the result of the check, not the document. Nothing is stored in a mailbox
+          or on a shared drive, and nothing is kept once the verification is recorded.
+        </p>
+      </div>
+
+      <!-- ============ DONE ============ -->
+      <div id="done" hidden>
+        <p class="lbl red" style="margin-bottom:12px">Received</p>
+        <h1 class="h-lg" style="margin-bottom:14px">That's everything we need.</h1>
+        <p class="lead" style="margin-bottom:24px">
+          Your document has gone to verification. Harrow &amp; Bell will see that your identity was
+          confirmed, and when — they will not receive a copy of the document itself.
+        </p>
+
+        <div class="card">
+          <div class="found" style="display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--rule)">
+            <span style="flex:1"><b id="fname">document.pdf</b><br><span class="tiny mono" id="fmeta">—</span></span>
+            <span class="pill ok">verified</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding-top:12px">
+            <span style="flex:1" class="small">Scheduled deletion</span>
+            <span class="timer" id="countdown">—</span>
+          </div>
+        </div>
+
+        <div class="note" style="margin-top:22px">
+          This is the control that stops the problem coming back. A clean-up removes what the practice has
+          already collected; the intake link changes how the next twenty arrive, so the pile does not rebuild
+          over the following twelve months.
+        </div>
+
+        <div class="btn-row" style="margin-top:24px">
+          <button class="btn ghost" id="again">Send another</button>
+          <a class="btn ghost" href="index.html">Back to Redline</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<script src="assets/app.js"></script>
+<script src="assets/data.js"></script>
+<script>
+(function(){
+  'use strict';
+  var R=window.Redline, $=R.$;
+  var drop=$('#drop'), file=$('#file'), picked=$('#picked'), sendBtn=$('#sendBtn');
+  var chosen=null, tick=null;
+
+  function show(f){
+    chosen=f;
+    picked.hidden=false;
+    picked.innerHTML='';
+    picked.appendChild(R.el('div',{class:'picked'},[
+      R.el('span',{class:'nm'},[R.el('b',{text:f.name})]),
+      R.el('span',{class:'pill',text:(f.size/1024).toFixed(0)+' KB'}),
+      R.el('button',{class:'tiny mono',text:'remove',onclick:function(){
+        chosen=null; picked.hidden=true; file.value=''; sendBtn.disabled=true;
+      }})
+    ]));
+    sendBtn.disabled=false;
+  }
+
+  drop.addEventListener('click',function(){ file.click(); });
+  drop.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); file.click(); } });
+  file.addEventListener('change',function(){ if(file.files[0]) show(file.files[0]); });
+  ['dragenter','dragover'].forEach(function(ev){
+    drop.addEventListener(ev,function(e){ e.preventDefault(); drop.classList.add('over'); });
+  });
+  ['dragleave','drop'].forEach(function(ev){
+    drop.addEventListener(ev,function(e){ e.preventDefault(); drop.classList.remove('over'); });
+  });
+  drop.addEventListener('drop',function(e){
+    if(e.dataTransfer.files && e.dataTransfer.files[0]) show(e.dataTransfer.files[0]);
+  });
+
+  sendBtn.addEventListener('click',function(){
+    /* Simulated: the file never leaves the browser. In the built service
+       this posts to a single-purpose endpoint, the verification result is
+       written to the practice's record, and the object is deleted on the
+       schedule shown below. */
+    var name = chosen ? chosen.name : 'document.pdf';
+    $('#fname').textContent=name;
+    $('#fmeta').textContent='received '+R.shortDate(new Date())+' · verification recorded · not sent to the practice mailbox';
+    $('#send').hidden=true; $('#done').hidden=false;
+    window.scrollTo(0,0);
+
+    var deadline=Date.now()+7*24*3600*1000;
+    clearInterval(tick);
+    tick=setInterval(function(){
+      var ms=deadline-Date.now();
+      if(ms<0) ms=0;
+      var d=Math.floor(ms/86400000), h=Math.floor(ms%86400000/3600000),
+          m=Math.floor(ms%3600000/60000), sec=Math.floor(ms%60000/1000);
+      $('#countdown').textContent='deletes in '+d+'d '+h+'h '+m+'m '+sec+'s';
+    },1000);
+    $('#countdown').textContent='deletes in 7d 0h 0m 0s';
+  });
+
+  $('#again').addEventListener('click',function(){
+    clearInterval(tick);
+    chosen=null; file.value=''; picked.hidden=true; sendBtn.disabled=true;
+    $('#done').hidden=true; $('#send').hidden=false; window.scrollTo(0,0);
+  });
+})();
+</script>
+</body>
+</html>

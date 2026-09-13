@@ -1,0 +1,294 @@
+/* ============================================================
+   REDLINE — design system for the 8.2HD high-fidelity prototype
+   Tokens carried over verbatim from the Task 6.1P brand guide and
+   the Task 6.2C landing page, so the prototype and the published
+   page are the same product.
+
+   Light: warm paper, brick red.   Dark: near-black, signal coral.
+   Every colour is declared on bare :root first, then re-declared in
+   the media query and again under [data-theme] so the manual toggle
+   wins in both directions.
+   ============================================================ */
+
+:root{
+  --paper:#F2F0E8;      /* Paper        — the primary ground, warm not white */
+  --paper-2:#FAF8F2;    /* Card         — raised panels */
+  --ink:#1A1A17;        /* Charcoal     — wordmark, headings, body. Never pure black */
+  --ink-2:#5E5B54;      /* Slate        — secondary text, captions */
+  --ink-3:#8A867C;
+  --rule:#DCD7C9;       /* Rule         — hairlines, table borders */
+  --rule-2:#C6C0AF;
+  --accent:#AF2A20;     /* Redline Red  — the dot, links, buttons, emphasis */
+  --accent-wash:rgba(175,42,32,.07);
+  --on-accent:#FDFCF8;
+  --ok:#1F6B4A;
+  --ok-wash:rgba(31,107,74,.09);
+  --warn:#8A5A12;
+  --warn-wash:rgba(138,90,18,.10);
+  --slab:#1C1A17;
+  --slab-ink:#F2F0E8;
+  --slab-ink-2:#A8A399;
+  --slab-rule:#3A3630;
+  --shadow:0 1px 2px rgba(26,26,23,.04),0 8px 24px rgba(26,26,23,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#1A1917; --paper-2:#131211;
+    --ink:#EFEBE2; --ink-2:#A29D93; --ink-3:#7B766D;
+    --rule:#302D28; --rule-2:#413D36;
+    --accent:#F0705E; --accent-wash:rgba(240,112,94,.10); --on-accent:#1A1917;
+    --ok:#5FBF93; --ok-wash:rgba(95,191,147,.12);
+    --warn:#D9A75A; --warn-wash:rgba(217,167,90,.12);
+    --slab:#0F0E0D; --slab-ink:#EFEBE2; --slab-ink-2:#A29D93; --slab-rule:#2A2723;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#1A1917; --paper-2:#131211;
+  --ink:#EFEBE2; --ink-2:#A29D93; --ink-3:#7B766D;
+  --rule:#302D28; --rule-2:#413D36;
+  --accent:#F0705E; --accent-wash:rgba(240,112,94,.10); --on-accent:#1A1917;
+  --ok:#5FBF93; --ok-wash:rgba(95,191,147,.12);
+  --warn:#D9A75A; --warn-wash:rgba(217,167,90,.12);
+  --slab:#0F0E0D; --slab-ink:#EFEBE2; --slab-ink-2:#A29D93; --slab-rule:#2A2723;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+}
+
+*{box-sizing:border-box}
+html{color-scheme:light dark}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,"Segoe UI",Roboto,sans-serif;
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%}
+[hidden]{display:none !important}
+h1,h2,h3,h4,p,figure,blockquote,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+.serif{font-family:Newsreader,Georgia,"Times New Roman",serif;font-weight:400}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace}
+.lbl{
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2);
+}
+.lbl.red{color:var(--accent)}
+.muted{color:var(--ink-2)}
+.small{font-size:14.5px;line-height:1.55}
+.tiny{font-size:12.5px;line-height:1.5;color:var(--ink-2)}
+.center{text-align:center}
+
+/* ===================== wordmark ===================== */
+.wm{
+  font-family:Newsreader,Georgia,serif;font-weight:500;
+  font-size:27px;letter-spacing:-.01em;color:var(--ink);
+  text-decoration:none;display:inline-block;line-height:1;
+}
+.wm i{color:var(--accent);font-style:normal}
+.wm.sm{font-size:21px}
+
+/* ===================== chrome ===================== */
+.bar{
+  position:sticky;top:0;z-index:40;
+  display:flex;align-items:center;gap:18px;
+  padding:14px clamp(18px,4vw,44px);
+  background:var(--paper);border-bottom:1px solid var(--rule-2);
+}
+.bar .grow{flex:1}
+.bar .tag{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-size:12.5px;color:var(--ink-2)}
+
+/* On a phone the bar keeps only the wordmark and the actions — the
+   tagline is the first thing to go, and the engagement pill is clipped
+   rather than allowed to push the page sideways. */
+@media (max-width:760px){
+  .bar{flex-wrap:wrap;gap:10px;padding:12px 16px}
+  .bar .tag{display:none}
+  .bar .pill{max-width:50vw;overflow:hidden;text-overflow:ellipsis}
+}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 clamp(18px,4vw,44px)}
+.wrap.narrow{max-width:760px}
+.wrap.mid{max-width:940px}
+section{padding:clamp(34px,5vw,62px) 0}
+.rule{height:1px;background:var(--rule);border:0;margin:0}
+
+/* ===================== type ===================== */
+.h-xl{font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(2.1rem,4.4vw,3.3rem);line-height:1.12;letter-spacing:-.015em}
+.h-lg{font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(1.7rem,3vw,2.35rem);line-height:1.16;letter-spacing:-.012em}
+.h-md{font-family:Newsreader,Georgia,serif;font-weight:400;font-size:clamp(1.3rem,2.2vw,1.65rem);line-height:1.22}
+.h-sm{font-family:"IBM Plex Sans",sans-serif;font-weight:600;font-size:17px;line-height:1.35}
+.lead{font-size:19px;line-height:1.6;color:var(--ink-2)}
+
+/* ===================== buttons ===================== */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 22px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);
+  font-weight:600;font-size:15.5px;letter-spacing:.005em;text-decoration:none;
+  transition:filter .15s ease, transform .06s ease;
+}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule-2)}
+.btn.ghost:hover{border-color:var(--ink);filter:none}
+.btn.sm{padding:8px 14px;font-size:14px}
+.btn[disabled]{opacity:.4;cursor:not-allowed;filter:none}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+
+/* ===================== panels ===================== */
+.card{background:var(--paper-2);border:1px solid var(--rule);padding:clamp(18px,2.6vw,28px)}
+.card.flat{background:transparent}
+.card + .card{margin-top:16px}
+.grid{display:grid;gap:16px}
+@media(min-width:760px){
+  .grid.c2{grid-template-columns:1fr 1fr}
+  .grid.c3{grid-template-columns:repeat(3,1fr)}
+  .grid.c2-1{grid-template-columns:1.35fr 1fr}
+}
+
+.note{border-left:3px solid var(--accent);padding:2px 0 2px 16px;color:var(--ink-2);font-size:15px;line-height:1.56}
+
+/* ===================== forms ===================== */
+.field{display:block;margin-bottom:14px}
+.field > span{display:block;margin-bottom:5px}
+input[type=text],input[type=email],select,textarea{
+  width:100%;padding:11px 13px;background:var(--paper-2);
+  border:1px solid var(--rule-2);color:var(--ink);border-radius:0;
+}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+
+/* option buttons in the readiness check */
+.opt{
+  display:flex;align-items:flex-start;gap:13px;width:100%;text-align:left;
+  padding:15px 17px;margin-bottom:10px;
+  background:var(--paper-2);border:1px solid var(--rule);
+  transition:border-color .12s ease, background .12s ease;
+}
+.opt:hover{border-color:var(--rule-2)}
+.opt .box{
+  flex:0 0 auto;width:17px;height:17px;margin-top:4px;
+  border:1.5px solid var(--rule-2);background:transparent;
+}
+.opt[aria-pressed="true"]{border-color:var(--accent);border-width:1.5px;background:var(--accent-wash)}
+.opt[aria-pressed="true"] .box{border-color:var(--accent);background:var(--accent);box-shadow:inset 0 0 0 2.5px var(--paper-2)}
+.opt.unsure{border-style:dashed;background:transparent}
+.opt.unsure[aria-pressed="true"]{background:var(--accent-wash)}
+.opt .txt{flex:1}
+.opt .sub{display:block;font-size:13.5px;color:var(--ink-2);margin-top:2px;line-height:1.45}
+
+/* ===================== progress ===================== */
+.prog{display:flex;gap:4px;margin-bottom:26px}
+.prog i{flex:1;height:4px;background:var(--rule);display:block}
+.prog i.on{background:var(--accent)}
+
+/* ===================== posture meter ===================== */
+.meter{display:flex;gap:4px;margin:10px 0 8px}
+.meter i{flex:1;height:9px;background:var(--rule);display:block}
+.meter i.on{background:var(--accent)}
+.bands{display:flex;gap:18px;flex-wrap:wrap}
+.bands span{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.bands span.on{color:var(--accent);font-weight:600}
+
+/* ===================== lifecycle strip ===================== */
+.life{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+.life .st{
+  flex:1;min-width:120px;padding:11px 12px;text-align:center;
+  background:var(--rule);color:var(--ink-2);font-size:13.5px;line-height:1.3;
+  border:1.5px solid transparent;
+}
+.life .ar{align-self:center;padding:0 9px;color:var(--accent)}
+.life .st.gap{background:var(--paper-2);border-color:var(--accent);color:var(--ink);font-weight:600}
+
+/* ===================== tables ===================== */
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top;font-size:15px}
+th{
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);
+  border-bottom:1px solid var(--rule-2);font-weight:500;
+}
+td.num,th.num{text-align:right;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+
+/* ===================== pills ===================== */
+.pill{
+  display:inline-block;padding:2px 9px;
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-size:12px;letter-spacing:.04em;
+  border:1px solid var(--rule-2);color:var(--ink-2);white-space:nowrap;
+}
+.pill.red{border-color:var(--accent);color:var(--accent)}
+.pill.ok{border-color:var(--ok);color:var(--ok);background:var(--ok-wash)}
+.pill.warn{border-color:var(--warn);color:var(--warn);background:var(--warn-wash)}
+
+/* ===================== action list ===================== */
+.acts{counter-reset:a}
+.acts li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--rule)}
+.acts li:last-child{border-bottom:0}
+.acts li:before{
+  counter-increment:a;content:"0" counter(a);
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-size:13px;color:var(--accent);font-weight:600;padding-top:2px;
+}
+.acts .est{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-size:13px;color:var(--ink-2);white-space:nowrap}
+
+/* ===================== scan animation ===================== */
+.scan{border:1px solid var(--rule);background:var(--paper-2)}
+.scan .row{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--rule);font-size:15px}
+.scan .row:last-child{border-bottom:0}
+.scan .row .loc{flex:1}
+.scan .row .st{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-size:12.5px;color:var(--ink-3)}
+.scan .row.done .st{color:var(--accent)}
+.scan .row.busy .st:after{content:"";animation:dots 1.2s steps(4,end) infinite}
+@keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+
+/* ===================== prototype menu ===================== */
+.protobar{
+  position:fixed;right:0;bottom:0;z-index:60;
+  background:var(--slab);color:var(--slab-ink);border:1px solid var(--slab-rule);border-right:0;border-bottom:0;
+  font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-size:12px;
+  max-width:min(96vw,560px);
+}
+.protobar .hd{display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer}
+.protobar .hd b{font-weight:600;letter-spacing:.09em;text-transform:uppercase;font-size:11px;color:var(--slab-ink)}
+.protobar .hd .dot{width:7px;height:7px;background:var(--accent);border-radius:50%}
+.protobar .hd .grow{flex:1}
+.protobar .bd{border-top:1px solid var(--slab-rule);padding:10px 12px 12px;display:flex;flex-wrap:wrap;gap:6px}
+.protobar a,.protobar button{
+  display:inline-block;padding:5px 9px;border:1px solid var(--slab-rule);color:var(--slab-ink-2);
+  text-decoration:none;font-size:11.5px;
+}
+.protobar a:hover,.protobar button:hover{border-color:var(--accent);color:var(--accent)}
+.protobar a.here{border-color:var(--accent);color:var(--accent)}
+.protobar .seed{color:var(--slab-ink);border-color:var(--slab-ink-2)}
+
+/* ===================== statement (print artefact) ===================== */
+.stmt{
+  background:var(--paper-2);border:1px solid var(--rule);
+  padding:clamp(22px,3.4vw,38px);box-shadow:var(--shadow);
+}
+.stmt .head{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  border-bottom:1.5px solid var(--ink);padding-bottom:16px;margin-bottom:16px}
+.stmt .ref{text-align:right;font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace;font-size:13px;color:var(--ink-2);line-height:1.7}
+.stmt .ref b{display:block;color:var(--ink);font-size:16px;letter-spacing:.04em;font-weight:500}
+.stmt .meta{display:flex;flex-wrap:wrap;gap:6px 26px;padding-bottom:16px;border-bottom:1px solid var(--rule);margin-bottom:18px;font-size:15px}
+.stmt .meta b{font-weight:600}
+.stmt .box{background:var(--paper);border:1px solid var(--rule);padding:16px 18px}
+.stmt .foot{border-top:1px solid var(--rule);margin-top:22px;padding-top:12px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+@media print{
+  @page{size:A4;margin:14mm}
+  :root{--paper:#fff;--paper-2:#fff;--ink:#1A1A17;--ink-2:#55524B;--rule:#D4CFC2;--rule-2:#BBB5A6;--accent:#AF2A20;--shadow:none}
+  .bar,.protobar,.noprint{display:none !important}
+  body{background:#fff;font-size:11pt;line-height:1.45}
+  .stmt{border:0;padding:0;box-shadow:none}
+  .wrap{max-width:none;padding:0}
+  section{padding:0}
+  .pagebreak{break-before:page}
+  a{color:var(--ink);text-decoration:none}
+}

@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Cyber Posture Statement — Redline</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2710%27 fill=%27%23AF2A20%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/redline.css">
+<style>
+  .cols{display:grid;gap:14px}
+  @media(min-width:820px){ .cols{grid-template-columns:1fr 1fr} }
+  .found{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule);font-size:15px}
+  .found:last-of-type{border-bottom:0}
+  .found .n{flex:1}
+  @media print{
+    .cols{grid-template-columns:1fr 1fr;gap:10px}
+    .stmt .box{padding:11px 13px}
+    /* keep the lifecycle strip on one line at A4 width */
+    .life .st{min-width:0;font-size:9pt;padding:7px 5px;line-height:1.25}
+    .life .ar{padding:0 5px}
+    /* Attachment A has to fit the page, not scroll */
+    #reg [style*="overflow-x"]{overflow:visible !important}
+    #regTable{table-layout:fixed;width:100%}
+    #regTable th,#regTable td{padding:3.5px 6px;font-size:8pt;line-height:1.32;overflow-wrap:anywhere}
+    #regTable .tiny,#regTable .small{font-size:8pt;line-height:1.32}
+    #regTable th:nth-child(1),#regTable td:nth-child(1){width:26%}
+    #regTable th:nth-child(2),#regTable td:nth-child(2){width:33%}
+    #regTable th:nth-child(3),#regTable td:nth-child(3){width:12%}
+    #regTable th:nth-child(4),#regTable td:nth-child(4){width:13%}
+    #regTable th:nth-child(5),#regTable td:nth-child(5){width:16%}
+    #regTable tr{break-inside:avoid}
+    #regTable .pill{padding:1px 6px;font-size:7.5pt}
+    #reg .foot{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<header class="bar noprint">
+  <a class="wm sm" href="index.html">Redline<i>.</i></a>
+  <span class="grow"></span>
+  <button class="btn ghost sm" onclick="location.href='console.html'">Back to console</button>
+  <button class="btn sm" onclick="window.print()">Print / save as PDF</button>
+</header>
+
+<main>
+  <section>
+    <div class="wrap mid">
+
+      <div id="empty" hidden>
+        <p class="lbl red" style="margin-bottom:10px">Nothing issued yet</p>
+        <h1 class="h-lg" style="margin-bottom:14px">No Statement has been issued for this engagement.</h1>
+        <p class="lead" style="margin-bottom:22px">
+          The Statement is generated from a completed review — it is not a template you fill in.
+          Run the engagement in the console, or load the worked example to see a finished one.
+        </p>
+        <div class="btn-row">
+          <button class="btn" id="seedBtn">Load the worked example</button>
+          <a class="btn ghost" href="console.html">Open the console</a>
+        </div>
+      </div>
+
+      <article class="stmt" id="doc" hidden>
+
+        <div class="head">
+          <div>
+            <span class="wm">Redline<i>.</i></span>
+            <h1 class="h-lg" style="margin-top:2px">Cyber Posture Statement</h1>
+          </div>
+          <div class="ref">
+            <span class="lbl">Reference</span>
+            <b id="ref">—</b>
+            <span id="issued">—</span>
+          </div>
+        </div>
+
+        <div class="meta">
+          <span><b>Practice</b> <span id="m_practice">—</span></span>
+          <span><b>Staff</b> <span id="m_staff">—</span></span>
+          <span><b>Systems reviewed</b> <span id="m_systems">—</span></span>
+        </div>
+
+        <div class="cols" style="margin-bottom:14px">
+          <div class="box">
+            <p class="lbl red" style="margin-bottom:6px">Posture rating</p>
+            <p class="h-lg" id="band" style="margin-bottom:2px">—</p>
+            <div class="meter" id="meter"></div>
+            <div class="bands" id="bandRow" style="margin-bottom:10px"></div>
+            <p class="small muted" id="baseline">Measured against the small-firm subset of the ASD Essential Eight.</p>
+          </div>
+
+          <div class="box">
+            <p class="lbl red" style="margin-bottom:10px">Where you are in the lifecycle</p>
+            <div class="life" style="margin-bottom:10px">
+              <div class="st" data-stage="collect">collect</div><div class="ar">→</div>
+              <div class="st" data-stage="verify">verify</div><div class="ar">→</div>
+              <div class="st" data-stage="keep">keep only<br>what's needed</div><div class="ar">→</div>
+              <div class="st" data-stage="destroy">destroy</div>
+            </div>
+            <p class="small" id="lifeNote">—</p>
+          </div>
+        </div>
+
+        <div class="cols">
+          <div class="box">
+            <p class="lbl red" style="margin-bottom:8px">What was found and cleared</p>
+            <div id="found"></div>
+            <p class="mono tiny" style="margin-top:10px" id="regNote">Full deletion record attached: path, date and authorising person for each item.</p>
+          </div>
+
+          <div class="box">
+            <p class="lbl red" style="margin-bottom:8px">Your next 3 actions</p>
+            <ol class="acts small" id="acts"></ol>
+            <p class="mono tiny" style="margin-top:10px">Nothing else is shown until these three are done.</p>
+          </div>
+        </div>
+
+        <div class="foot">
+          <span class="small muted">Prepared by Redline. · Reviewed with the principal on <span id="revDate">—</span></span>
+          <span class="small muted">Page 1 · deletion record attached as Attachment A</span>
+        </div>
+        <p class="tiny" style="margin-top:8px">
+          This statement records observed security posture on the date shown. Redline is not a law firm, does not
+          provide legal advice, and does not certify compliance with the AML/CTF Act or the Privacy Act. It does not
+          reproduce any of the personal information reviewed during the engagement.
+        </p>
+      </article>
+
+      <!-- ===== attached register (page 2 in print) ===== -->
+      <article class="stmt pagebreak" id="reg" hidden style="margin-top:26px">
+        <div class="head">
+          <div>
+            <span class="lbl red">Attachment A</span>
+            <h2 class="h-md" style="margin-top:2px">Deletion record</h2>
+          </div>
+          <div class="ref">
+            <span class="lbl">Statement</span>
+            <b id="ref2">—</b>
+          </div>
+        </div>
+        <p class="small muted" style="margin-bottom:14px">
+          Every identity document located during the review, the decision taken on it, and who authorised that
+          decision. Items marked <i>kept</i> were retained on the practice's own instruction and the reason is recorded.
+        </p>
+        <div style="overflow-x:auto"><table id="regTable"><tbody></tbody></table></div>
+        <div class="foot">
+          <span class="small muted">Attachment A to <span id="ref3">—</span></span>
+          <span class="small muted">End of deletion record</span>
+        </div>
+      </article>
+
+      <p class="mono tiny noprint" style="margin-top:22px" id="hint"></p>
+
+    </div>
+  </section>
+</main>
+
+<script src="assets/app.js"></script>
+<script src="assets/data.js"></script>
+<script>
+(function(){
+  'use strict';
+  var R=window.Redline, D=window.RedlineData, $=R.$;
+  var s=R.load();
+
+  $('#seedBtn') && $('#seedBtn').addEventListener('click',function(){
+    D.seed();
+    var t=R.load();
+    t.statement={ref:R.makeRef(t.engagement.practice),issued:new Date().toISOString(),band:'Developing',authorisedBy:t.engagement.contact};
+    R.save(t); location.reload();
+  });
+
+  if(!s.statement || !s.engagement || !s.discovery){ $('#empty').hidden=false; return; }
+  $('#doc').hidden=false; $('#reg').hidden=false;
+
+  var e=s.engagement, st=s.statement;
+
+  /* ---- header ---- */
+  $('#ref').textContent=st.ref; $('#ref2').textContent=st.ref; $('#ref3').textContent=st.ref;
+  $('#issued').textContent='Issued '+R.longDate(st.issued);
+  $('#m_practice').textContent=e.practice;
+  $('#m_staff').textContent=e.staff;
+  $('#m_systems').textContent=e.systems;
+  $('#revDate').textContent=R.longDate(st.issued);
+
+  /* ---- posture ---- */
+  $('#band').textContent=st.band;
+  var lit=R.bandIndex(st.band)+1, m=$('#meter');
+  for(var n=0;n<4;n++) m.appendChild(R.el('i',{class:n<lit?'on':''}));
+  var br=$('#bandRow');
+  R.BANDS.forEach(function(b){ br.appendChild(R.el('span',{class:b===st.band?'on':'',text:b})); });
+
+  var assessed=D.E8.filter(function(c){return s.e8[c.id];});
+  if(assessed.length){
+    var p=assessed.filter(function(c){return s.e8[c.id]==='pass';}).length;
+    $('#baseline').textContent='Measured against the small-firm subset of the ASD Essential Eight — '+
+      p+' of '+D.E8.length+' controls fully in place on the date of review.';
+  }
+
+  /* ---- lifecycle ---- */
+  var keptCount=0, clearCount=0;
+  s.discovery.items.forEach(function(it){
+    ((s.decisions[it.id]||{}).action==='keep') ? keptCount++ : clearCount++;
+  });
+  var gapStage = clearCount>0 ? 'keep' : 'destroy';
+  var gapEl=document.querySelector('[data-stage="'+gapStage+'"]');
+  if(gapEl) gapEl.classList.add('gap');
+  $('#lifeNote').textContent = clearCount>0
+    ? 'The practice collects and verifies correctly. The gap was at retention: identity documents were being kept after the verification was recorded.'
+    : 'Collection, verification and retention are in order. Keep the destruction step running on a schedule.';
+
+  /* ---- found and cleared ---- */
+  var box=$('#found');
+  D.CORPUS.forEach(function(loc){
+    var items=s.discovery.items.filter(function(i){return i.loc===loc.id;});
+    if(!items.length) return;
+    var kept=items.filter(function(i){return (s.decisions[i.id]||{}).action==='keep';}).length;
+    var cleared=items.length-kept;
+    if(!cleared) return;   /* all-kept locations are reported on the single line below */
+    box.appendChild(R.el('div',{class:'found'},[
+      R.el('span',{class:'n',text:loc.short||loc.n}),
+      R.el('span',{class:'pill ok',text:cleared+' removed'})
+    ]));
+  });
+  if(keptCount){
+    box.appendChild(R.el('div',{class:'found'},[
+      R.el('span',{class:'n',text:'Retained on client instruction'}),
+      R.el('span',{class:'pill warn',text:keptCount+' kept'})
+    ]));
+  }
+  $('#regNote').textContent='Full deletion record attached (Attachment A): path, date and authorising person for each of the '+
+    s.discovery.items.length+' items located.';
+
+  /* ---- next three actions, from the baseline ---- */
+  var rank={fail:0,partial:1,pass:2};
+  var todo=D.E8.filter(function(c){return s.e8[c.id]==='fail'||s.e8[c.id]==='partial';})
+    .sort(function(a,b){ return rank[s.e8[a.id]]-rank[s.e8[b.id]] || a.mins-b.mins; })
+    .slice(0,3);
+  if(!todo.length && s.check && s.check.gaps){
+    todo = s.check.gaps.map(function(g){ return {fix:g.text, mins:g.mins}; });
+  }
+  if(!todo.length){
+    todo=[{fix:'Set the scanner folder to clear automatically after 7 days.',mins:10}];
+  }
+  var acts=$('#acts');
+  todo.forEach(function(c){
+    acts.appendChild(R.el('li',{},[
+      R.el('span',{style:'flex:1',text:c.fix}),
+      R.el('span',{class:'est',text:'~'+c.mins+' min'})
+    ]));
+  });
+
+  /* ---- attachment A ---- */
+  var tb=$('#regTable').querySelector('tbody');
+  tb.appendChild(R.el('tr',{},[
+    R.el('th',{text:'File'}),R.el('th',{text:'Location'}),
+    R.el('th',{text:'Decision'}),R.el('th',{text:'Date'}),R.el('th',{text:'Authorised by'})
+  ]));
+  s.discovery.items.forEach(function(it){
+    var d=s.decisions[it.id]||{action:'clear'};
+    tb.appendChild(R.el('tr',{},[
+      R.el('td',{text:it.file}),
+      R.el('td',{class:'mono tiny',text:it.path}),
+      R.el('td',{},[R.el('span',{class:'pill '+(d.action==='keep'?'warn':'ok'),text:d.action==='keep'?'kept':'deleted'})]),
+      R.el('td',{class:'mono tiny',text:R.shortDate(d.at||st.issued)}),
+      R.el('td',{class:'small',text:st.authorisedBy})
+    ]));
+  });
+
+  $('#hint').textContent='Print or save as PDF gives a one-page statement with the deletion record attached as page two. '+
+    'Reference '+st.ref+' · issued '+R.longDate(st.issued)+'.';
+})();
+</script>
+</body>
+</html>

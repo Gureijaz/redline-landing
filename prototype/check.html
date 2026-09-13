@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Tranche 2 Readiness Check — Redline</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%2710%27 fill=%27%23AF2A20%27/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/redline.css">
+</head>
+<body>
+
+<header class="bar">
+  <a class="wm sm" href="index.html">Redline<i>.</i></a>
+  <span class="grow"></span>
+  <span class="tag" id="stepTag">6 questions · about 3 minutes</span>
+</header>
+
+<main>
+  <section>
+    <div class="wrap narrow">
+
+      <!-- ============ START ============ -->
+      <div id="start">
+        <p class="lbl red" style="margin-bottom:12px">Start</p>
+        <h1 class="h-lg" style="margin-bottom:16px">Is your practice ready for Tranche 2?</h1>
+        <p class="lead" style="margin-bottom:8px">
+          Six plain-English questions about where client identity documents end up and what protects them.
+          You will get a provisional posture and the three things worth doing first.
+        </p>
+        <ul class="small muted" style="margin:18px 0 26px">
+          <li style="margin-bottom:6px">— Nothing to look up. If you don't know, say so; that is a useful answer.</li>
+          <li style="margin-bottom:6px">— No account, and no email address to begin.</li>
+          <li>— Your answers stay in this browser.</li>
+        </ul>
+        <button class="btn" id="begin">Start the check</button>
+        <p class="mono tiny" style="margin-top:14px">6 questions · about 3 minutes · no account needed</p>
+      </div>
+
+      <!-- ============ QUESTION ============ -->
+      <div id="quiz" hidden>
+        <div class="prog" id="prog" aria-hidden="true"></div>
+        <p class="lbl red" id="qnum" style="margin-bottom:10px"></p>
+        <h1 class="h-md" id="qtext" style="margin-bottom:8px"></h1>
+        <p class="small muted" id="qhelp" style="margin-bottom:20px"></p>
+        <div id="opts" role="group"></div>
+        <p class="mono tiny" id="multiHint" hidden style="margin:-2px 0 14px">Tick every one that applies.</p>
+        <div class="btn-row" style="margin-top:20px">
+          <button class="btn ghost" id="back">Back</button>
+          <button class="btn" id="next" disabled>Next</button>
+        </div>
+      </div>
+
+      <!-- ============ RESULT ============ -->
+      <div id="result" hidden>
+        <p class="lbl red" style="margin-bottom:12px">Your result</p>
+        <h1 class="h-lg" style="margin-bottom:4px">Provisional posture</h1>
+        <p class="h-xl serif" id="band" style="margin:14px 0 6px"></p>
+        <div class="meter" id="meter"></div>
+        <div class="bands" id="bandRow" style="margin-bottom:6px"></div>
+        <p class="mono tiny" id="scoreLine" style="margin-bottom:26px"></p>
+
+        <p class="lbl" style="margin-bottom:10px" id="gapsHead">Three gaps worth acting on</p>
+        <ol class="acts" id="gaps" style="margin-bottom:10px"></ol>
+        <p class="small muted" id="unsureNote" hidden style="margin-bottom:20px"></p>
+
+        <div class="note" style="margin:20px 0 26px">
+          Indicative only. This is based on what you told us, not on anything we have checked.
+          A review looks at the systems themselves and produces a dated Cyber Posture Statement you can hand
+          to AUSTRAC, an insurer or a client.
+        </div>
+
+        <div class="btn-row">
+          <a class="btn" href="index.html#call">Book a 30-minute call</a>
+          <button class="btn ghost" id="again">Start again</button>
+        </div>
+        <p class="mono tiny" style="margin-top:18px">
+          Consultant side of the same engagement: <a href="console.html">open the console →</a>
+        </p>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<script src="assets/app.js"></script>
+<script src="assets/data.js"></script>
+<script>
+(function(){
+  'use strict';
+  var R = window.Redline, D = window.RedlineData, $ = R.$;
+  var Q = D.QUESTIONS, i = 0, answers = {};
+
+  var startEl=$('#start'), quizEl=$('#quiz'), resEl=$('#result'), tag=$('#stepTag');
+
+  function show(which){
+    startEl.hidden = which!=='start';
+    quizEl.hidden  = which!=='quiz';
+    resEl.hidden   = which!=='result';
+    window.scrollTo(0,0);
+  }
+
+  /* ---------- progress ---------- */
+  function drawProgress(){
+    var p = $('#prog'); p.innerHTML='';
+    Q.forEach(function(_,n){
+      p.appendChild(R.el('i',{class:n<=i?'on':''}));
+    });
+  }
+
+  /* ---------- one question ---------- */
+  function render(){
+    var q = Q[i];
+    drawProgress();
+    tag.textContent = 'Question ' + (i+1) + ' of ' + Q.length;
+    $('#qnum').textContent = 'Question ' + (i+1) + ' of ' + Q.length;
+    $('#qtext').textContent = q.q;
+    $('#qhelp').textContent = q.help || '';
+    $('#multiHint').hidden = !q.multi;
+
+    var box = $('#opts'); box.innerHTML='';
+    q.options.forEach(function(o){
+      var picked = q.multi
+        ? (answers[q.id]||[]).indexOf(o.v)>-1
+        : answers[q.id]===o.v;
+
+      var txt = R.el('span',{class:'txt'},[ R.el('span',{text:o.t}) ]);
+      if(o.sub) txt.appendChild(R.el('span',{class:'sub',text:o.sub}));
+
+      var b = R.el('button',{
+        class:'opt'+(o.unsure?' unsure':''),
+        type:'button',
+        'aria-pressed': picked?'true':'false',
+        onclick:function(){ choose(q,o); }
+      },[ R.el('span',{class:'box'}), txt ]);
+      box.appendChild(b);
+    });
+
+    $('#back').textContent = i===0 ? 'Back to start' : 'Back';
+    $('#next').textContent = i===Q.length-1 ? 'See my result' : 'Next';
+    updateNext();
+  }
+
+  function choose(q,o){
+    if(q.multi){
+      var cur = answers[q.id] || [];
+      if(o.unsure){
+        /* "not sure" is exclusive — you cannot both know and not know */
+        cur = cur.indexOf(o.v)>-1 ? [] : [o.v];
+      } else {
+        cur = cur.filter(function(v){ return v!=='unsure'; });
+        var at = cur.indexOf(o.v);
+        if(at>-1) cur.splice(at,1); else cur.push(o.v);
+      }
+      answers[q.id] = cur;
+    } else {
+      answers[q.id] = answers[q.id]===o.v ? null : o.v;
+    }
+    render();
+  }
+
+  function answered(){
+    var q = Q[i], a = answers[q.id];
+    return q.multi ? !!(a && a.length) : !!a;
+  }
+  function updateNext(){ $('#next').disabled = !answered(); }
+
+  /* ---------- result ---------- */
+  function finish(){
+    var sc = D.scoreCheck(answers);
+
+    $('#band').textContent = sc.band;
+
+    var m = $('#meter'); m.innerHTML='';
+    var lit = R.bandIndex(sc.band)+1;
+    for(var n=0;n<4;n++) m.appendChild(R.el('i',{class:n<lit?'on':''}));
+
+    var br = $('#bandRow'); br.innerHTML='';
+    R.BANDS.forEach(function(b){ br.appendChild(R.el('span',{class:b===sc.band?'on':'',text:b})); });
+
+    $('#scoreLine').textContent = sc.score + ' of ' + sc.max +
+      ' · measured against the small-firm subset of the ASD Essential Eight and current OAIC retention guidance';
+
+    var g = $('#gaps'); g.innerHTML='';
+    sc.gaps.forEach(function(x){
+      g.appendChild(R.el('li',{},[
+        R.el('span',{style:'flex:1',text:x.text}),
+        R.el('span',{class:'est',text:'~'+x.mins+' min'})
+      ]));
+    });
+    $('#gapsHead').textContent = sc.gaps.length===1 ? 'One gap worth acting on'
+      : (sc.gaps.length===0 ? 'No gaps from what you told us' : sc.gaps.length+' gaps worth acting on');
+
+    if(sc.unsure){
+      var u = $('#unsureNote'); u.hidden=false;
+      u.textContent = 'You answered "I’m not sure" ' + R.plural(sc.unsure,'time') +
+        '. That is not a wrong answer — it is the finding. A practice that cannot say where client ID is held cannot show what it no longer holds.';
+    }
+
+    /* hand the result to the rest of the engagement */
+    var s = R.load();
+    s.check = { answers: answers, band: sc.band, score: sc.score, max: sc.max, gaps: sc.gaps, takenAt: new Date().toISOString() };
+    R.save(s);
+
+    tag.textContent = 'Result · indicative only';
+    show('result');
+  }
+
+  /* ---------- wiring ---------- */
+  $('#begin').addEventListener('click', function(){ i=0; show('quiz'); render(); });
+  $('#next').addEventListener('click', function(){
+    if(!answered()) return;
+    if(i===Q.length-1) finish(); else { i++; render(); show('quiz'); }
+  });
+  $('#back').addEventListener('click', function(){
+    if(i===0){ tag.textContent='6 questions · about 3 minutes'; show('start'); }
+    else { i--; render(); }
+  });
+  $('#again').addEventListener('click', function(){
+    answers={}; i=0; tag.textContent='6 questions · about 3 minutes'; show('start');
+  });
+
+  /* resume a previous run so the demo can be replayed */
+  var prev = R.load().check;
+  if(prev && prev.answers && location.hash !== '#new'){
+    answers = prev.answers;
+    if(prev.band){ finish(); }
+  }
+})();
+</script>
+</body>
+</html>
